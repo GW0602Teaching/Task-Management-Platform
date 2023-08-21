@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/api/project")
 public class ProjectController {
@@ -18,7 +20,7 @@ public class ProjectController {
     private ProjectService projectService;
 
     @PostMapping(value = "")
-    public ResponseEntity<Project> createNewProject(@RequestBody Project project) {
+    public ResponseEntity<Project> createNewProject(@Valid @RequestBody Project project) {
         Project newProject = projectService.saveOrUpdateProject(project);
         return new ResponseEntity<Project>(newProject, HttpStatus.CREATED);
     }
