@@ -22,4 +22,8 @@ public class ProjectService {
 
     }
 
+    public Project findProjectById(String projectId) {
+        return projectRepository.findByProjectId((projectId));
+    }
+
 }
