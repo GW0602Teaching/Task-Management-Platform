@@ -3,6 +3,7 @@ package io.gwteaching.tmptool.services;
 import io.gwteaching.tmptool.dto.Backlog;
 import io.gwteaching.tmptool.dto.Project;
 import io.gwteaching.tmptool.exceptions.ProjectIdException;
+import io.gwteaching.tmptool.repositories.BacklogRepository;
 import io.gwteaching.tmptool.repositories.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,9 @@ public class ProjectService {
     @Autowired
     private ProjectRepository projectRepository;
 
+    @Autowired
+    private BacklogRepository backlogRepository;
+
     public Project saveOrUpdateProject(Project project) {
         try {
             project.setProjectId(project.getProjectId().toUpperCase());
@@ -22,6 +26,8 @@ public class ProjectService {
                 project.setBacklog(backlog);
                 backlog.setProject(project);
                 backlog.setProjectId(project.getProjectId().toUpperCase());
+            } else {
+                project.setBacklog(backlogRepository.findByProjectId(project.getProjectId()));
             }
 
             return projectRepository.save(project);
