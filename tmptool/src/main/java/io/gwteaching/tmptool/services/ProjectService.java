@@ -1,5 +1,6 @@
 package io.gwteaching.tmptool.services;
 
+import io.gwteaching.tmptool.dto.Backlog;
 import io.gwteaching.tmptool.dto.Project;
 import io.gwteaching.tmptool.exceptions.ProjectIdException;
 import io.gwteaching.tmptool.repositories.ProjectRepository;
@@ -15,6 +16,14 @@ public class ProjectService {
     public Project saveOrUpdateProject(Project project) {
         try {
             project.setProjectId(project.getProjectId().toUpperCase());
+
+            if (project.getId() == null) {
+                Backlog backlog = new Backlog();
+                project.setBacklog(backlog);
+                backlog.setProject(project);
+                backlog.setProjectId(project.getProjectId().toUpperCase());
+            }
+
             return projectRepository.save(project);
         } catch (Exception e) {
             throw new ProjectIdException("Project ID '" + project.getProjectId().toUpperCase() + "' is already existed");
