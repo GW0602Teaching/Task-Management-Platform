@@ -1,5 +1,6 @@
 package io.gwteaching.tmptool.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,6 +34,10 @@ public class Task {
     private Date dueDate;
 
     // ManyToOne with backlog
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "backlog_identifier", updatable = false, nullable = false)
+    @JsonIgnore
+    private Backlog backlog;
 
     @Column(updatable = false)
     private String projectId;
@@ -52,7 +57,7 @@ public class Task {
     }
 
 
-    // In case we have to do some troubleshooting, not only the memory reference id but also the object itself
+    // In case we have to do some troubleshooting, not only the memory_reference_id but also the object itself
     @Override
     public String toString() {
         return "Task{" +
