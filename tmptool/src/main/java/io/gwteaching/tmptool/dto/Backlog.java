@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -23,8 +20,11 @@ public class Backlog {
 
     private  String projectId;
 
-
     // OneToOne with Project
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "project_identifier", nullable = false)
+    private Project project;
+
 
     // OneToMany Tasks
 
