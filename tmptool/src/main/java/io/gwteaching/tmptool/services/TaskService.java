@@ -8,6 +8,8 @@ import org.hibernate.internal.util.StringHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TaskService {
 
@@ -37,5 +39,9 @@ public class TaskService {
         }
 
         return taskRepository.save(task);
+    }
+
+    public List<Task> findTaskByProjectId(String productId) {
+        return taskRepository.findByProjectIdOrderByPriority(productId);
     }
 }
