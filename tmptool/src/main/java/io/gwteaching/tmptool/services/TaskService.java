@@ -23,11 +23,12 @@ public class TaskService {
 
         Integer backlogSequence = backlog.getTaskSequence();
         backlogSequence++;
+        backlog.setTaskSequence(backlogSequence);
 
         task.setProjectSequence(projectId + "-" + backlogSequence);
         task.setProjectId(projectId);
 
-        if (task.getPriority() == null || task.getPriority() == 0) {
+        if (task.getPriority() == null) {
             task.setPriority(3);
         }
 
