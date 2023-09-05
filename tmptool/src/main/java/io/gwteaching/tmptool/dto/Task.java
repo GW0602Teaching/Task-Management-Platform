@@ -19,7 +19,7 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(updatable = false)
+    @Column(updatable = false, unique = true)
     private String projectSequence; // Backlog.taskSequence + Backlog.projectId => own count specific to each project and each backlog
 
     @NotBlank(message = "Please include a project Summary")
