@@ -71,4 +71,11 @@ public class TaskService {
         }
         return task;
     }
+
+    public Task updateTaskByProjectSequence(Task updatedTask, String projectId, String projectSequence) {
+        // re-use the previous method
+        Task task = findTaskByProjectSequence(projectId, projectSequence);
+        task = updatedTask;
+        return taskRepository.save(task);
+    }
 }
