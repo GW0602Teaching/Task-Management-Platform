@@ -3,6 +3,7 @@ package io.gwteaching.tmptool.controller;
 import io.gwteaching.tmptool.dto.User;
 import io.gwteaching.tmptool.services.MapValidationErrorService;
 import io.gwteaching.tmptool.services.UserService;
+import io.gwteaching.tmptool.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +25,14 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserValidator userValidator;
+
     @PostMapping(value = "/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody User user, BindingResult result) {
+
+        userValidator.validate(user, result);
+
         ResponseEntity<?> errorMap = mapValidationErrorService.mapValidation(result);
         if (errorMap != null) {
             return errorMap;
