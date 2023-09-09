@@ -10,8 +10,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -45,6 +47,8 @@ public class User implements UserDetails {
     private Date updateAt;
 
     // OneToMany with project, and then project handle the relationship
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH, mappedBy = "user", orphanRemoval = true)
+    private List<Project> projectList = new ArrayList<>();
 
     @PrePersist
     protected void onCreate() {
