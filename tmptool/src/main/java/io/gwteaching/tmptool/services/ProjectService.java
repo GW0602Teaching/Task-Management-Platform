@@ -4,6 +4,7 @@ import io.gwteaching.tmptool.dto.Backlog;
 import io.gwteaching.tmptool.dto.Project;
 import io.gwteaching.tmptool.dto.User;
 import io.gwteaching.tmptool.exceptions.ProjectIdException;
+import io.gwteaching.tmptool.exceptions.ProjectNotFoundException;
 import io.gwteaching.tmptool.repositories.BacklogRepository;
 import io.gwteaching.tmptool.repositories.ProjectRepository;
 import io.gwteaching.tmptool.repositories.UserRepository;
@@ -49,11 +50,16 @@ public class ProjectService {
 
     }
 
-    public Project findProjectById(String projectId) {
+    public Project findProjectById(String projectId, String username) {
         Project project = projectRepository.findByProjectId(projectId);
-        
+
         if (project == null) {
             throw new ProjectIdException("Project ID '" + projectId.toUpperCase() + "' does not existed");
+        }
+
+        // User access restriction
+        if (!project.getProjectOwner().equals(username)) {
+            throw new ProjectNotFoundException("Project ID '" + projectId.toUpperCase() + "' not found in your account");
         }
 
         return projectRepository.findByProjectId((projectId));
