@@ -28,12 +28,13 @@ public class UserCustomizedDetailsService implements UserDetailsService {
 
     @Transactional
     public User loadUserById(Long id) {
-        User user = userRepository.getById(id);
 
-        if (user == null) {
+        boolean isExist = userRepository.findById(id).isPresent();
+        if (!isExist) {
             throw new UsernameNotFoundException("User with id: " + id + "not existed");
         }
-        return user;
+
+        return userRepository.findById(id).get();
     }
 
 }

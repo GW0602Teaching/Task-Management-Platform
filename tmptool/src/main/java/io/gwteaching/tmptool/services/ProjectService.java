@@ -2,9 +2,11 @@ package io.gwteaching.tmptool.services;
 
 import io.gwteaching.tmptool.dto.Backlog;
 import io.gwteaching.tmptool.dto.Project;
+import io.gwteaching.tmptool.dto.User;
 import io.gwteaching.tmptool.exceptions.ProjectIdException;
 import io.gwteaching.tmptool.repositories.BacklogRepository;
 import io.gwteaching.tmptool.repositories.ProjectRepository;
+import io.gwteaching.tmptool.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +19,18 @@ public class ProjectService {
     @Autowired
     private BacklogRepository backlogRepository;
 
-    public Project saveOrUpdateProject(Project project) {
+    @Autowired
+    private UserRepository userRepository;
+
+    public Project saveOrUpdateProject(Project project, String username) {
         try {
+
+            // Find the user
+            User user = userRepository.findByUsername(username);
+
+            project.setUser(user);
+            project.setProjectOwner(user.getUsername());
+
             project.setProjectId(project.getProjectId().toUpperCase());
 
             if (project.getId() == null) {

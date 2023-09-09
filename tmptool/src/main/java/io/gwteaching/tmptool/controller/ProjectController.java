@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +25,7 @@ public class ProjectController {
     private MapValidationErrorService mapValidationErrorService;
 
     @PostMapping(value = "")
-    public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result) {
+    public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result, Principal principal) {
 
         ResponseEntity<?> errorMap = mapValidationErrorService.mapValidation(result);
 
@@ -33,7 +34,7 @@ public class ProjectController {
         }
 
 
-        Project newProject = projectService.saveOrUpdateProject(project);
+        Project newProject = projectService.saveOrUpdateProject(project, principal.getName());
         return new ResponseEntity<Project>(newProject, HttpStatus.CREATED);
     }
 
@@ -62,7 +63,7 @@ public class ProjectController {
     }
 
     @PutMapping(value = "")
-    public ResponseEntity<?> updateNewProject(@Valid @RequestBody Project project, BindingResult result) {
+    public ResponseEntity<?> updateNewProject(@Valid @RequestBody Project project, BindingResult result, Principal principal) {
 
         ResponseEntity<?> errorMap = mapValidationErrorService.mapValidation(result);
 
@@ -71,7 +72,7 @@ public class ProjectController {
         }
 
 
-        Project newProject = projectService.saveOrUpdateProject(project);
+        Project newProject = projectService.saveOrUpdateProject(project, principal.getName());
         return new ResponseEntity<Project>(newProject, HttpStatus.CREATED);
     }
 }
