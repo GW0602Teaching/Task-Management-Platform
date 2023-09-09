@@ -50,9 +50,9 @@ public class ProjectController {
 //    }
 
     @GetMapping(value = "/all")
-    public ResponseEntity<?> getAll() {
+    public ResponseEntity<?> getAll(Principal principal) {
         Map<String, Iterable<Project>> map = new HashMap<>();
-        map.put("data", projectService.findAllProjects());
+        map.put("data", projectService.findAllProjects(principal.getName()));
         return new ResponseEntity<Map<String, Iterable<Project>>>(map, HttpStatus.OK);
     }
 
